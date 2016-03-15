@@ -1,0 +1,180 @@
+Algorithms: Homework #2
+(Homework problems are enclosed on Savannah’s Github account)
+1. 
+import java.util.*;
+import java.lang.*;
+
+public class BozoSort {
+    private static int NUMBER_OF_TRIALS = 10;
+
+    public static void bozoSort(ArrayList<Integer> list) {
+        Random r = new Random();
+        boolean isSorted = false;
+
+        while (!isSorted) {
+            int index1 = r.nextInt(list.size());
+            int index2 = r.nextInt(list.size());
+
+            Integer store = list.get(index1);
+            list.set(index1, list.get(index2));
+            list.set(index2, store);
+
+            isSorted = true;
+
+            //check if sorted
+            for (int i = 0; i < list.size() - 1; i++) {
+                isSorted = isSorted && 
+list.get(i).compareTo(list.get(i + 1)) <= 0;
+            }
+        }
+    } 
+
+    public static void main(String[] args) {  
+      	ArrayList<Integer> t = new ArrayList<Integer>();
+      	Random r = new Random();
+      	long[] totalTimes = new long[NUMBER_OF_TRIALS + 1];
+	      
+	    System.out.println("n" + "\t" + "Average Time (ms)");
+	    
+	    for (int i = 0; i <= NUMBER_OF_TRIALS; i++) {	    	
+	        for (int j = 0; j <= (NUMBER_OF_TRIALS); j++) { 
+	    		  long start = 0;
+	    		  long end = 0;
+	    		
+	    		  t.add(r.nextInt(1000));
+		    	
+		    	  start = System.currentTimeMillis();
+		    	  bozoSort(t);
+		    	  end = System.currentTimeMillis();
+		    	 
+		    	  totalTimes[j] += (end - start);
+
+		    	  if (j != (NUMBER_OF_TRIALS - 1)) {
+		    	    t.remove(i);
+	            }
+	        }
+
+	    System.out.println(i + "\t" + 
+    ((float)totalTimes[i]/NUMBER_OF_TRIALS));    	
+	    }
+    }
+}
+
+
+2. 
+public class AutoKeyVigenere {
+
+    public static String encrypt(String text, String key) {
+        return encrypt(text, key, 1);
+       }
+       
+    public static String decrypt(String ciphertext, String key) {
+        return encrypt(ciphertext, key, -1);
+        }
+        
+    private static String encrypt(String text, String key, int  
+    multiplier) {
+        if ("".equals(key)) {
+            throw new IllegalArgumentException("Key cannot be empty");
+        }
+        
+        StringBuilder builder = new StringBuilder();
+        int keyLength = key.length();
+       
+        for (int i = 0, n = text.length(); i < n; i++) {
+            char k = i <keyLength ? key.charAt(i) :
+                multiplier == 1 ? text.charAt(i - keyLength):
+                builder.charAt(i - keyLength);
+            builder.append((char) (k* multiplier + text.charAt(i)));
+        }
+        
+        return builder.toString();
+    }
+
+    public static void main(String[] args) {
+        
+    }
+}
+
+3.The progress of our arms, upon which all else chiefly depends, is as well known to the public as to myself, and it is, I trust, reasonably satisfactory and encouraging to all. With high hope for the future, no prediction in regard to it is ventured.
+
+4. COMPUTER SCIENCE IS NO MORE ABOUT COMPUTERS THAN ASTRONOMY IS ABOUT TELESCOPESS
+
+5. 
+N = pq = 1911330379750465988511865475607817924950038631764482538080744390093883432017
+(p-1)(q-1) = 1911330379750465988511865475607817924846043384185557740590270903584228162660
+e = 7
+d = modinverse(7, 1911330379750465988511865475607817924846043384185557740590270903584228162660) = 546094394214418853860532993030805121384583824053016497311505972452636617903
+Public key (N, e) = (1911330379750465988511865475607817924950038631764482538080744390093883432017, 7)
+Private key (N, d) = (1911330379750465988511865475607817924950038631764482538080744390093883432017, 546094394214418853860532993030805121384583824053016497311505972452636617903)
+
+6. (729880581317,5)=(n,e)
+	Factor n to get p and q of 822893,886969
+	Phi = (822893-1)(886969-1)
+	d*5(mod Phi)=1
+	Inverse mod to find d = 583903097165
+	Private key =(729880581317,583903097165)
+	
+
+7.
+We want digital signatures in order to be able to authenticate an identity of the sender of the message, and to ensure that the message hasn’t been tampered with by someone else. 
+Verify((N, e),M^d,M) can be implemented by checking whether (M^d)^e mod N = M. Then, if the signature was created by the private key d, we have (M^d)^e mod N = (M^e)^d mod N = M mod N = M. But if someone was able to sign given only (N,e), they would be able to compute the formula and thus let him decrypt, which would then contradict the security of RSA. 
+I picked p = 137, q = 71. Hence N = pq = 9727 and Phi(N) = (p−1)(q −1) = 9520 = 2^4 * 5 * 7 * 17. Then, I chose e = 99, which is coprime to Phi(n). d must then be the inverse of e mod Phi(n), that is 6539, found by running Extended Euclid. Moreover, I chose L to map to binary using the ASCII code, for which L = 76. Then, the signature of this first number is 76^99 mod 9727 = 4814. Finally, 4814^99 mod 9727 = 76, as required.
+391 can be factored as 17 · 23. Moreover, Phi(391) = 16 * 22 = 352 and d = (e)^−1 mod 352 = 145, by Extended Euclid. Therefore, 145 * 17 = 2465 = 1 mod 352, as required.
+
+8. 
+When Eve intercepts the encrypted message M^e mod N sent by Alice to Bob, she can just ask Bob to sign it for her with its private key to obtain (M^e)^d mod N = M. 
+Eve knows (N,e). She then intercepts me modeN from Alice. She picks a value x coprime to N, computes the problem using X, multiplies it with the ciphertext. Then gets Bob to sign it and finally does inverseMod. 
+
+9. Each call prints one line and recursively calls function on half of input two times so T(n) = 2 T(n/2) + 1 = Θ(n) by master theorem. 
+
+Also:
+
+T(n) = 2 * T( n/2 ) + 1    with n = 2k
+
+T(1) = 0
+T(2) = 2 * T(1) + 1 = 2 * 0 + 1 = 1
+T(4) = 2 * T(2) + 1 = 2 * 1 + 1 = 3
+T(8) = 2 * T(4) + 1 = 2 * 3 + 1 = 7
+T(16) = 2 * T(8) + 1 = 2 * 7 + 1 = 15
+T(32) = 2 * T(16) + 1 = 2 * 15 + 1 = 31
+etc.
+
+pattern is 1, 3, 7, 15, 31 or (n-1)
+             
+we know n = 2k, so:
+
+T(2k) = 2 * T(2k-1) + 1
+      = 2 * (2k-1- 1) + 1
+      = 2k - 1
+      = n - 1
+      = big-theta( n )
+10.
+
+def majority(a): 
+if len(a) == 0: 
+return None 
+if len(a) == 1: 
+return a[0] 
+half = len(a) // 2 
+left = majority(a[0:half]) 
+right = majority(a[half:]) 
+if left == right: 
+return left 
+if a.count(left) > half: 
+return left 
+if a.count(right) > half: 
+return right return None
+
+def majority(a):
+    count = 0
+    for x in a:
+        if count == 0:
+            candidate = x;
+        if x == candidate:
+            count += 1
+        else:
+            count -= 1
+    if a and a.count(candidate) > len(a) // 2:
+        return candidate
+    return None
